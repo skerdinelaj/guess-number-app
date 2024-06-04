@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, Platform } from 'react-native'
 import React, { ReactNode } from 'react'
 import Colors from '../../constants/colors'
 
@@ -18,12 +18,13 @@ const styles = StyleSheet.create({
     title: {
         fontFamily: 'open-sans-bold',
         fontSize: 24,
-        fontWeight: 'bold',
         color: Colors.accent500,
         textAlign: 'center',
-        borderWidth: 2,
+        borderWidth: Platform.OS === 'android' ? 2 : 0,
         borderColor: Colors.accent500,
         borderRadius: 8,
         padding: 12,
+        maxWidth: '80%',
+        width: 300
     }
 })

@@ -7,6 +7,7 @@ import GameOverScreen from './screens/GameOverScreen';
 import Colors from './constants/colors';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
+import { StatusBar } from 'expo-status-bar';
 
 export default function App() {
   const [userNumber, setUserNumber] = useState<null | number>(null);
@@ -66,6 +67,9 @@ export default function App() {
   }
 
   return (
+    <>
+    
+    <StatusBar style="light" />
     <LinearGradient colors={[Colors.primary700, Colors.accent500]} style={styles.rootScreen}>
       <ImageBackground
         source={require('./assets/images/background.png')}
@@ -78,6 +82,7 @@ export default function App() {
         </SafeAreaView>
       </ImageBackground >
     </LinearGradient>
+    </>
   );
 }
 

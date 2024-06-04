@@ -1,4 +1,5 @@
-import { Image, StyleSheet, Text, View } from 'react-native'
+import { Image, StyleSheet, Text, View, Dimensions } from 'react-native'
+import { useWindowDimensions } from 'react-native'
 import React from 'react'
 import Title from '../components/ui/Title'
 import Colors from '../constants/colors'
@@ -11,19 +12,26 @@ type GameOverScreenProps = {
 }
 
 const GameOverScreen = ({ roundsNumber, userNumber, onStartNewGame }: GameOverScreenProps) => {
+  const { width, height } = useWindowDimensions()
   return (
-    <View style={styles.rootContainer}>
+    <View style={height < 450 ? {flex: 1, marginTop: 12, alignItems: 'center' } : styles.rootContainer}>
       <Title>GAME OVER!</Title>
-      <View style={styles.imageContainer}>
-        <Image source={require('../assets/images/success.png')} style={styles.image} />
+      <View style={[height < 450 ? styles.containerHorizontal : { alignItems: 'center'}  ]}>
+        <View style={height < 450 ? [styles.imageContainer] : styles.imageContainer}>
+          <Image source={require('../assets/images/success.png')} style={ styles.image} />
+        </View>
+        <View style={height < 450 && {flex: 2, alignItems: 'center'} }>
+          <Text style={styles.summaryText}>Your phone needed <Text style={styles.highlight}>{roundsNumber}</Text> rounds to guess the number <Text style={styles.highlight}>{userNumber}</Text> correctly </Text>
+          <PrimaryButon onPress={onStartNewGame}>Start New Game</PrimaryButon>
+        </View>
       </View>
-      <Text style={styles.summaryText}>Your phone needed <Text style={styles.highlight}>{roundsNumber}</Text> rounds to guess the number <Text style={styles.highlight}>{userNumber}</Text> correctly </Text>
-      <PrimaryButon onPress={onStartNewGame}>Start New Game</PrimaryButon>
     </View>
   )
 }
 
 export default GameOverScreen
+
+const deviceWidth = Dimensions.get('window').width
 
 const styles = StyleSheet.create({
   rootContainer: {
@@ -33,13 +41,14 @@ const styles = StyleSheet.create({
     padding: 24
   },
   imageContainer: {
-    width: 300,
-    height: 300,
-    borderRadius: 150,
+    width: deviceWidth < 380 ? 150 : 300,
+    height: deviceWidth < 380 ? 150 : 300,
+    borderRadius: deviceWidth < 380 ? 75 : 150,
     borderWidth: 3,
     borderColor: Colors.primary800,
     overflow: 'hidden',
-    marginVertical: 30
+   
+    
   },
   image: {
     width: '100%',
@@ -47,13 +56,18 @@ const styles = StyleSheet.create({
   },
   summaryText: {
     fontFamily: 'open-sans',
-    fontSize: 24,
+    fontSize: deviceWidth < 380 ? 16 : 24,
     textAlign: 'center',
     marginBottom: 24
   },
   highlight: {
     fontFamily: 'open-sans-bold',
     color: Colors.primary500
+  },
+  containerHorizontal: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   }
 
 })
